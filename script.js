@@ -10,7 +10,7 @@ function winner(id) {
 }
 
 // Update the score of the player
-function updateScore(id) {
+const updateScore = function (id) {
   if (!id) {
     // update his total score content on screen
     playerOne.textContent = totalOne;
@@ -24,10 +24,10 @@ function updateScore(id) {
     playerTwoScore = 0;
     currentPlayerTwo.textContent = playerTwoScore;
   }
-}
+};
 
 // Activate the player
-function activatePlayer(id) {
+const activatePlayer = function (id) {
   // toggle the flag as we activate another player
   f ^= 1;
 
@@ -41,7 +41,7 @@ function activatePlayer(id) {
     player1.classList.remove("player--active");
     player0.classList.add("player--active");
   }
-}
+};
 
 // Handling the rolling Dice
 function handlingDice() {
@@ -80,35 +80,41 @@ function handlingDice() {
 // Handling switch between players
 function switchPlayer() {
   if (playing) {
-    if (player0.classList.contains("player--active")) {
+    if (holdFlage) {
       // check if the 1st player is active
-      // activate the 2nd player
-      activatePlayer(1);
-      // if the 1st player holds
-      if (holdFlage) {
+      if (player0.classList.contains("player--active")) {
         // update his total score
         totalOne += playerOneScore;
         // check if the 1st player wins
         if (totalOne >= 100) {
+          // update his total score content on screen
+          playerOne.textContent = totalOne;
           winner(0);
         } else {
+          // activate the 2nd player
+          activatePlayer(1);
           updateScore(0);
         }
-      }
-    } else {
-      // activate the 1st player
-      activatePlayer(0);
-      // if the 2nd player holds
-      if (holdFlage) {
+      } else {
         // update his total score
         totalTwo += playerTwoScore;
-        // check if the 1st player wins
+        // check if the 2nd player wins
         if (totalTwo >= 100) {
+          // update his total score content on screen
+          playerTwo.textContent = totalTwo;
           winner(1);
         } else {
+          // activate the 1st player
+          activatePlayer(0);
           updateScore(1);
         }
       }
+    } else {
+      // if f=0 activate player one and othewise
+      activatePlayer(!f);
+      // f will be toggled from the above func
+      // if f=1 update player one and vice versa
+      updateScore(!f);
     }
     // set the hold flag to true as it was
     holdFlage = true;
