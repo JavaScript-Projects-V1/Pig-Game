@@ -28,9 +28,6 @@ const updateScore = function (id) {
 
 // Activate the player
 const activatePlayer = function (id) {
-  // toggle the flag as we activate another player
-  f ^= 1;
-
   // activate the player based on his id
   if (id) {
     // activate the 2nd player
@@ -53,17 +50,13 @@ function handlingDice() {
     // display the rolling dice image
     dice.classList.remove("hidden");
     if (!f) {
-      // must switch to 2nd player
-      if (diceNumber === 1) playerOneScore = 0;
       // increase the current score
-      else playerOneScore += diceNumber;
+      playerOneScore += diceNumber;
       // update the content of current score
       currentPlayerOne.textContent = playerOneScore;
     } else {
-      // must switch to 1st player
-      if (diceNumber === 1) playerTwoScore = 0;
       // increase the current score
-      else playerTwoScore += diceNumber;
+      playerTwoScore += diceNumber;
       // update the content of current score
       currentPlayerTwo.textContent = playerTwoScore;
     }
@@ -114,16 +107,18 @@ function switchPlayer() {
       activatePlayer(!f);
       // f will be toggled from the above func
       // if f=1 update player one and vice versa
-      updateScore(!f);
+      updateScore(f);
     }
     // set the hold flag to true as it was
     holdFlage = true;
+    // toggle the flag as we activate another player
+    f ^= 1;
   }
 }
 
 // Reset the Game (start a new Game)
 function resetGame() {
-  totalOne = totalTwo = playerOneScore = playerTwoScore = 0;
+  totalOne = totalTwo = playerOneScore = playerTwoScore = f = 0;
   playerOne.textContent = 0;
   currentPlayerOne.textContent = 0;
   playerTwo.textContent = 0;
